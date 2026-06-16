@@ -34,6 +34,7 @@ Textile ecommerce scaffold with:
 - Set `FULFILLMENT_WEBHOOK_SECRET` if you want shared-secret protection on 3PL webhook calls
 - Set `SHIPBOB_WEBHOOK_SECRET` if you wire ShipBob webhooks into the fulfillment endpoint
 - ShipBob dispatch needs a full shipping address on the order record and a channel header in the outbound request
+- ShipBob dispatch also needs each ordered item to carry a saved `shipbobReferenceId`
 - Set `FULFILLMENT_DISPATCH_ENDPOINTS_JSON` to map a fulfillment partner to an outbound POST endpoint, for example `{"partner_shipbob":{"url":"https://api.shipbob.com/2026-01/order","headers":{"authorization":"Bearer replace-me","shipbob_channel_id":"replace-me"}}}`
 - Set `FULFILLMENT_DISPATCH_TIMEOUT_MS` to change the partner POST timeout in milliseconds
 
