@@ -38,6 +38,37 @@ Textile ecommerce scaffold with:
 - Set `FULFILLMENT_DISPATCH_ENDPOINTS_JSON` to map a fulfillment partner to an outbound POST endpoint, for example `{"partner_shipbob":{"url":"https://api.shipbob.com/2026-01/order","headers":{"authorization":"Bearer replace-me","shipbob_channel_id":"replace-me"}}}`
 - Set `FULFILLMENT_DISPATCH_TIMEOUT_MS` to change the partner POST timeout in milliseconds
 
+## Production deployment
+
+Recommended path:
+- Host the Next.js app on Vercel
+- Use a managed Postgres database such as Neon or Supabase
+- Keep `POSTGRES_AUTO_BOOTSTRAP=false` in production and bootstrap the database before first deploy
+
+Deployment checklist:
+1. Create the production Postgres database.
+2. Set `DATABASE_URL` and `POSTGRES_SSL=true` in your production environment.
+3. Run `npm run db:bootstrap` once against the production database.
+4. Set the required runtime secrets:
+   - `ADMIN_PASSWORD`
+   - `ADMIN_SESSION_SECRET`
+   - `FULFILLMENT_WEBHOOK_SECRET` if you want partner webhook protection
+   - `SHIPBOB_WEBHOOK_SECRET` if you use ShipBob webhooks
+   - `FULFILLMENT_DISPATCH_ENDPOINTS_JSON` if you want outbound partner dispatch
+5. Deploy the app from the Git repository.
+6. Point your custom domain at the production deployment.
+7. Update any 3PL webhook URLs to the new production URL.
+
+Vercel notes:
+- Vercel creates preview deployments for non-production branches and a production deployment when you push to the production branch or run `vercel --prod`.
+- Configure environment variables separately for Production, Preview, and Development if needed.
+- For local development with the same config, use `vercel env pull` or a local `.env.local` file.
+
+If you self-host instead of using Vercel:
+- Run `npm run build`
+- Run `npm run start`
+- Use any provider that supports a Node.js server
+
 ## Run
 ```bash
 npm install
